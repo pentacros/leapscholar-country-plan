@@ -916,7 +916,7 @@
   ════════════════════════════════════════════ -->
   <div id="pageShortlist" class="page">
 
-    <!-- Counsellor's Note -->
+    <!-- Counsellor's Note --><div id="counsellor-note"></div>
     <div style="margin: 16px 16px 0;">
       <div style="font-size: 13px; font-weight: 600; color: #4F46E5; margin-bottom: 8px;">Counsellor's Note</div>
       <div style="border: 1px solid #E5E7EB; border-radius: 12px; padding: 16px 18px;">
@@ -1341,7 +1341,11 @@ function switchTab(tab) {
   document.getElementById('stickyCtaText').innerHTML = `Request a call back ${phoneIcon}`;
 
   document.getElementById('floatPill').style.display = isCountry ? '' : 'none';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const targetId = isCountry ? 'sec-why' : 'counsellor-note';
+  setTimeout(() => {
+    const el = document.getElementById(targetId);
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 105, behavior: 'smooth' });
+  }, 50);
 }
 
 // ─── PILL NAV ────────────────────────────────────────────────────────
