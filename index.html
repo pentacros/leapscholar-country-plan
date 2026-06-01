@@ -1341,8 +1341,7 @@ function switchTab(tab) {
   document.getElementById('stickyCtaText').innerHTML = `Request a call back ${phoneIcon}`;
 
   document.getElementById('floatPill').style.display = isCountry ? '' : 'none';
-  window.scrollTo({ top: 0 });
-  window.scrollTo({ top: 0 });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ─── PILL NAV ────────────────────────────────────────────────────────
