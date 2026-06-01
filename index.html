@@ -1366,16 +1366,6 @@ function toggleCounsellorNote() {
   btn.textContent = isCollapsed ? 'Read less' : 'Read more';
 }
 
-// ─── HIDE PLAN BUTTON NEAR TOP ───────────────────────────────────────
-window.addEventListener('scroll', () => {
-  const hero = document.querySelector('.hero');
-  const pill = document.getElementById('floatPill');
-  if (!hero || !pill) return;
-  const heroBottom = hero.getBoundingClientRect().bottom;
-  const pastHero = heroBottom < 52;
-  pill.style.opacity = pastHero ? '1' : '0';
-  pill.style.pointerEvents = pastHero ? 'all' : 'none';
-}, { passive: true });
 
 // ─── ACTIVE SECTION DETECTION ────────────────────────────────────────
 const sectionIds = ['sec-why','sec-demand','sec-colleges','sec-financial','sec-jobs','sec-timeline','sec-faq'];
