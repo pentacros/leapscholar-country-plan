@@ -538,7 +538,7 @@
     position: fixed;
     bottom: 120px;
     right: 16px;
-    z-index: 30;
+    z-index: 45;
     width: 54px; height: 54px;
     border-radius: 14px;
     background: #111827;
@@ -1365,6 +1365,17 @@ function toggleCounsellorNote() {
   p.style.overflow = isCollapsed ? 'visible' : 'hidden';
   btn.textContent = isCollapsed ? 'Read less' : 'Read more';
 }
+
+// ─── HIDE PLAN BUTTON NEAR TOP ───────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.hero');
+  const pill = document.getElementById('floatPill');
+  if (!hero || !pill) return;
+  const heroBottom = hero.getBoundingClientRect().bottom;
+  const pastHero = heroBottom < 52;
+  pill.style.opacity = pastHero ? '1' : '0';
+  pill.style.pointerEvents = pastHero ? 'all' : 'none';
+}, { passive: true });
 
 // ─── ACTIVE SECTION DETECTION ────────────────────────────────────────
 const sectionIds = ['sec-why','sec-demand','sec-colleges','sec-financial','sec-jobs','sec-timeline','sec-faq'];
