@@ -536,7 +536,7 @@
   /* ── SQUARE FLOAT BUTTON ── */
   #floatPill {
     position: fixed;
-    bottom: 76px;
+    bottom: 120px;
     right: 16px;
     z-index: 30;
     width: 54px; height: 54px;
@@ -580,8 +580,7 @@
     opacity: 0;
     pointer-events: none;
     transition: transform 0.22s cubic-bezier(0.4,0,0.2,1), opacity 0.22s ease;
-    max-height: 320px;
-    overflow-y: auto;
+    max-height: none;
   }
   #bottomSheet.open {
     transform: scale(1) translateY(0);
@@ -599,6 +598,13 @@
   .sheet-item:last-child { border-bottom: none; }
   .sheet-item-label { font-size: 14px; font-weight: 500; color: #F3F4F6; }
   .sheet-item-count { display: none; }
+  .sheet-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: transparent; flex-shrink: 0; margin-right: 10px; order: -1;
+    transition: background 0.2s;
+  }
+  .sheet-item.active-section .sheet-dot { background: #fff; box-shadow: 0 0 6px rgba(255,255,255,0.6); }
+  .sheet-item.active-section .sheet-item-label { color: #fff; font-weight: 700; }
 
   /* ── STICKY CTA ── */
   #stickyCtaBar {
@@ -990,26 +996,33 @@
   <!-- BOTTOM SHEET -->
   <div id="bottomSheet" role="dialog" aria-label="Plan sections">
     <div class="sheet-handle"></div>
-    <div class="sheet-item" onclick="sheetNav('sec-why')">
+    <div class="sheet-item" id="si-sec-why" onclick="sheetNav('sec-why')">
       <span class="sheet-item-label">Why Choose UK</span>
+      <span class="sheet-dot" id="sd-sec-why"></span>
     </div>
-    <div class="sheet-item" onclick="sheetNav('sec-demand')">
+    <div class="sheet-item" id="si-sec-demand" onclick="sheetNav('sec-demand')">
       <span class="sheet-item-label">Industry Demand</span>
+      <span class="sheet-dot" id="sd-sec-demand"></span>
     </div>
-    <div class="sheet-item" onclick="sheetNav('sec-colleges')">
+    <div class="sheet-item" id="si-sec-colleges" onclick="sheetNav('sec-colleges')">
       <span class="sheet-item-label">Best Fit Colleges</span>
+      <span class="sheet-dot" id="sd-sec-colleges"></span>
     </div>
-    <div class="sheet-item" onclick="sheetNav('sec-financial')">
+    <div class="sheet-item" id="si-sec-financial" onclick="sheetNav('sec-financial')">
       <span class="sheet-item-label">Financial Picture</span>
+      <span class="sheet-dot" id="sd-sec-financial"></span>
     </div>
-    <div class="sheet-item" onclick="sheetNav('sec-jobs')">
+    <div class="sheet-item" id="si-sec-jobs" onclick="sheetNav('sec-jobs')">
       <span class="sheet-item-label">Live Job Openings</span>
+      <span class="sheet-dot" id="sd-sec-jobs"></span>
     </div>
-    <div class="sheet-item" onclick="sheetNav('sec-timeline')">
+    <div class="sheet-item" id="si-sec-timeline" onclick="sheetNav('sec-timeline')">
       <span class="sheet-item-label">PR Timeline</span>
+      <span class="sheet-dot" id="sd-sec-timeline"></span>
     </div>
-    <div class="sheet-item" onclick="sheetNav('sec-faq')">
+    <div class="sheet-item" id="si-sec-faq" onclick="sheetNav('sec-faq')">
       <span class="sheet-item-label">FAQs</span>
+      <span class="sheet-dot" id="sd-sec-faq"></span>
     </div>
   </div>
 
@@ -1353,8 +1366,29 @@ function toggleCounsellorNote() {
   btn.textContent = isCollapsed ? 'Read less' : 'Read more';
 }
 
+// ─── ACTIVE SECTION DETECTION ────────────────────────────────────────
+const sectionIds = ['sec-why','sec-demand','sec-colleges','sec-financial','sec-jobs','sec-timeline','sec-faq'];
+
+function getActiveSection() {
+  let active = sectionIds[0];
+  sectionIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top <= 120) active = id;
+  });
+  return active;
+}
+
+function updateSheetActiveState() {
+  const active = getActiveSection();
+  sectionIds.forEach(id => {
+    const item = document.getElementById('si-' + id);
+    if (item) item.classList.toggle('active-section', id === active);
+  });
+}
+
 // ─── BOTTOM SHEET ────────────────────────────────────────────────────
 function openSheet() {
+  updateSheetActiveState();
   document.getElementById('sheetOverlay').classList.add('open');
   document.getElementById('bottomSheet').classList.add('open');
 }
