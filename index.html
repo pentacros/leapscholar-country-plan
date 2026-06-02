@@ -97,36 +97,36 @@
   .share-btn:hover { background: var(--surface); }
 
   /* ── TAB BAR ── */
-  .tab-bar {
-    position: sticky;
-    top: 52px;
-    z-index: 40;
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-  }
-  .tab-btn {
-    flex: 1;
-    padding: 14px 0 12px;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--muted);
-    background: none;
-    border: none;
-    border-bottom: 2.5px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: 'Inter', sans-serif;
-  }
-  .tab-btn.active {
-    color: var(--primary);
-    font-weight: 700;
-    border-bottom-color: var(--primary);
-  }
-
   /* ── PAGE CONTENT ── */
-  .page { display: none; padding-bottom: 80px; }
-  .page.active { display: block; }
+  .page { padding-bottom: 80px; }
+
+  /* ── SHORTLIST SCREEN ── */
+  #shortlistScreen {
+    position: fixed; inset: 0;
+    background: #fff;
+    z-index: 60;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    overflow-y: auto;
+    max-width: 390px;
+    left: 50%; margin-left: -195px;
+  }
+  #shortlistScreen.open { transform: translateX(0); }
+  .shortlist-header {
+    position: sticky; top: 0; z-index: 10;
+    background: #fff; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    padding: 0 16px; height: 52px;
+  }
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 14px;
+    font-weight: 600; color: var(--primary); padding: 0;
+  }
+  .shortlist-header-title {
+    font-size: 16px; font-weight: 700; color: var(--text);
+  }
 
   /* ── HERO ── */
   .hero { position: relative; margin-top: 52px; }
@@ -202,6 +202,29 @@
 
   /* ── BODY PARAGRAPH ── */
   .body-para { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 16px; }
+
+  /* ── JUMP TO SECTION ── */
+  .jump-section { padding: 20px 16px 8px; }
+  .jump-title { font-size: 17px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+  .jump-subtitle { font-size: 12px; color: #6B7280; margin-bottom: 14px; }
+  .jump-grid { display: flex; flex-direction: column; }
+  .jump-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 8px 0; cursor: pointer;
+    border-bottom: 1px solid #F3F4F6;
+    transition: opacity 0.15s;
+  }
+  .jump-card:last-child { border-bottom: none; }
+  .jump-card:hover { opacity: 0.7; }
+  .jump-card-icon { display: none; }
+  .jump-step-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #F3F4F6; color: #6B7280;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .jump-card-label { font-size: 14px; font-weight: 500; color: #111827; flex: 1; }
+  .jump-card-arrow { display: none; }
 
   /* ── INFO CARD ── */
   .info-card {
@@ -533,29 +556,32 @@
   }
   .sl-why-item.open .sl-why-answer { max-height: 120px; padding-bottom: 12px; }
 
-  /* ── SQUARE FLOAT BUTTON ── */
+  /* ── RECT FLOAT BUTTON ── */
   #floatPill {
     position: fixed;
     bottom: 120px;
     right: 16px;
     z-index: 45;
-    width: 54px; height: 54px;
+    height: 46px;
     border-radius: 14px;
     background: #111827;
     border: none;
     cursor: pointer;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 3px;
+    display: flex; flex-direction: row;
+    align-items: center; justify-content: center;
+    gap: 8px; padding: 0 16px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-    transition: transform 0.2s, box-shadow 0.2s;
-    padding: 0;
+    white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.2s, box-shadow 0.2s;
   }
-  #floatPill:hover { transform: scale(1.06); box-shadow: 0 6px 22px rgba(0,0,0,0.5); }
+  #floatPill:hover { transform: scale(1.04); box-shadow: 0 6px 22px rgba(0,0,0,0.5); }
+  #floatPill.visible { opacity: 1; pointer-events: all; }
   #floatPill .fp-icon { display: flex; align-items: center; justify-content: center; }
   #floatPill .fp-label {
     font-family: 'Inter', sans-serif;
-    font-size: 9px; font-weight: 700;
-    letter-spacing: 0.1em; color: #fff;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.05em; color: #fff;
     text-transform: uppercase; line-height: 1;
   }
 
@@ -672,27 +698,67 @@
     <div class="hero-card">
       <p class="hero-greeting">Hi, Rahul 👋</p>
       <h1 class="hero-title">Your study abroad plan is here</h1>
-      <p style="font-size: 10px; color: #9CA3AF; letter-spacing: 0.04em; margin: 12px 0 6px; text-align:center;">Based on your profile &amp; preferences</p>
-      <div style="display:flex; flex-wrap:wrap; gap:7px; justify-content:center; margin: 0 0 14px;">
-        <span class="profile-tag">UK</span>
-        <span class="profile-tag">Sep 2025</span>
-        <span class="profile-tag">Budget: ₹20–35L</span>
-        <span class="profile-tag">Engineering Management</span>
-      </div>
     </div>
   </div>
 
-  <!-- TAB BAR (sticky — locks after hero scrolls away) -->
-  <nav class="tab-bar" id="tabBar" role="tablist">
-    <button class="tab-btn active" id="tabCountry" onclick="switchTab('country')" role="tab" aria-selected="true">Country Plan</button>
-    <button class="tab-btn" id="tabShortlist" onclick="switchTab('shortlist')" role="tab" aria-selected="false">Your Shortlist</button>
-  </nav>
 
   <!-- ═══════════════════════════════════════════
        TAB 1: COUNTRY PLAN
   ════════════════════════════════════════════ -->
-  <div id="pageCountry" class="page active">
+  <div id="pageCountry" class="page">
 
+
+    <!-- JUMP TO SECTION -->
+    <div class="jump-section" id="jump-section">
+      <h2 class="jump-title">Jump to what matters to you</h2>
+      <p class="jump-subtitle">Tap any section to go there directly</p>
+      <div class="jump-grid">
+        <div class="jump-card" onclick="jumpTo('sec-faq')">
+          <div class="jump-step-num">1</div>
+          <span class="jump-card-label">Session Q&amp;A</span>
+          <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="jump-card" onclick="jumpTo('sec-why')">
+          <div class="jump-step-num">2</div>
+          <span class="jump-card-label">Why Choose UK</span>
+          <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="jump-card" onclick="jumpTo('sec-demand')">
+          <div class="jump-step-num">3</div>
+          <span class="jump-card-label">Industry Demand</span>
+          <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="jump-card" onclick="jumpTo('sec-colleges')">
+          <div class="jump-step-num">4</div>
+          <span class="jump-card-label">Best Fit Colleges</span>
+          <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="jump-card" onclick="jumpTo('sec-financial')">
+          <div class="jump-step-num">5</div>
+          <span class="jump-card-label">Financial Picture</span>
+          <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="jump-card" onclick="jumpTo('sec-jobs')">
+          <div class="jump-step-num">6</div>
+          <span class="jump-card-label">Live Job Openings</span>
+          <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="jump-card" onclick="jumpTo('sec-timeline')">
+          <div class="jump-step-num">7</div>
+          <span class="jump-card-label">PR Timeline</span>
+          <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="section-divider"></div>
+
+    <!-- SESSION Q&A -->
+    <div id="sec-faq" class="section">
+      <h2 class="section-title">Questions from your counselling session</h2>
+      <div id="faqList" role="list"></div>
+    </div>
+
+    <div class="section-divider"></div>
 
     <!-- SECTION 1A: Why choose UK -->
     <div id="sec-why" class="subsection">
@@ -775,7 +841,7 @@
         <!-- Cards rendered by JS -->
       </div>
 
-      <a class="view-all" onclick="switchTab('shortlist')" role="button" tabindex="0" aria-label="View all 12 colleges in shortlist">View all 12 colleges →</a>
+      <a class="view-all" onclick="openShortlist()" role="button" tabindex="0" aria-label="View all 12 colleges in shortlist">View all 12 colleges →</a>
     </div>
 
     <div class="section-divider"></div>
@@ -900,13 +966,6 @@
       </div>
     </div>
 
-    <div class="section-divider"></div>
-
-    <!-- SECTION 6: FAQ -->
-    <div id="sec-faq" class="section">
-      <h2 class="section-title">Frequently asked questions</h2>
-      <div id="faqList" role="list"></div>
-    </div>
 
   </div><!-- end #pageCountry -->
 
@@ -914,12 +973,24 @@
   <!-- ═══════════════════════════════════════════
        TAB 2: YOUR SHORTLIST
   ════════════════════════════════════════════ -->
-  <div id="pageShortlist" class="page">
+  <!-- ═══════════════════════════════════════════
+       SHORTLIST FULL-SCREEN PAGE
+  ════════════════════════════════════════════ -->
+  <div id="shortlistScreen">
+    <!-- Header -->
+    <div class="shortlist-header">
+      <button class="back-btn" onclick="closeShortlist()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="shortlist-header-title">Your Shortlist</span>
+    </div>
 
-    <!-- Counsellor's Note --><div id="counsellor-note"></div>
+    <!-- Counsellor's Note -->
+    <div id="counsellor-note"></div>
     <div style="margin: 16px 16px 0;">
-      <div style="font-size: 13px; font-weight: 600; color: #4F46E5; margin-bottom: 8px;">Counsellor's Note</div>
-      <div style="border: 1px solid #E5E7EB; border-radius: 12px; padding: 16px 18px;">
+      <div style="border: 1px solid #E5E7EB; border-radius: 12px; padding: 16px 18px; text-align: center;">
+        <div style="font-size: 13px; font-weight: 600; color: #4F46E5; margin-bottom: 10px;">Counsellor's Note</div>
         <p id="counsellorText" style="font-size: 14px; font-style: italic; color: #374151; line-height: 1.75; text-align: center; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
           Hey <strong>Aniket</strong>, upon reviewing your profile and preferences, I have put together this shortlist just for you. These are courses I think are worth your attention. Universities that match what you are looking for, fees within your budget, and programs where your chances are strong. I hope something here catches your eye. If you want to dive deeper into any of these or have questions, feel free to reach out. I am here to help.
         </p>
@@ -938,9 +1009,8 @@
 
     <!-- Flat list of all cards -->
     <div id="allShortlistCards" style="padding: 0 16px;"></div>
-
-    <div style="height: 16px;"></div>
-  </div><!-- end #pageShortlist -->
+    <div style="height: 80px;"></div>
+  </div><!-- end #shortlistScreen -->
 
   <!-- SUCCESS MODAL -->
 <div id="successModal" style="display:none; position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.45); align-items:flex-end; justify-content:center;" onclick="closeModal(event)">
@@ -987,7 +1057,7 @@
         <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
       </svg>
     </span>
-    <span class="fp-label">PLAN</span>
+    <span class="fp-label">JUMP TO</span>
   </button>
 
   <!-- BOTTOM SHEET OVERLAY -->
@@ -996,6 +1066,10 @@
   <!-- BOTTOM SHEET -->
   <div id="bottomSheet" role="dialog" aria-label="Plan sections">
     <div class="sheet-handle"></div>
+    <div class="sheet-item" id="si-sec-faq" onclick="sheetNav('sec-faq')">
+      <span class="sheet-item-label">Session Q&amp;A</span>
+      <span class="sheet-dot" id="sd-sec-faq"></span>
+    </div>
     <div class="sheet-item" id="si-sec-why" onclick="sheetNav('sec-why')">
       <span class="sheet-item-label">Why Choose UK</span>
       <span class="sheet-dot" id="sd-sec-why"></span>
@@ -1020,18 +1094,10 @@
       <span class="sheet-item-label">PR Timeline</span>
       <span class="sheet-dot" id="sd-sec-timeline"></span>
     </div>
-    <div class="sheet-item" id="si-sec-faq" onclick="sheetNav('sec-faq')">
-      <span class="sheet-item-label">FAQs</span>
-      <span class="sheet-dot" id="sd-sec-faq"></span>
-    </div>
   </div>
 
   <!-- STICKY CTA BAR -->
   <div id="stickyCtaBar" role="button" tabindex="0" aria-label="Request a call back" onclick="openModal()" onkeypress="if(event.key==='Enter')openModal()">
-    <span id="stickyCtaSubtext">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2.5" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Application deadline is near — don't miss out!
-    </span>
     <span id="stickyCtaText">
       Request a call back
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
@@ -1328,24 +1394,15 @@ function initFinanceChart() {
 }
 
 // ─── TAB SWITCHING ────────────────────────────────────────────────────
-function switchTab(tab) {
-  const isCountry = tab === 'country';
-  document.getElementById('pageCountry').classList.toggle('active', isCountry);
-  document.getElementById('pageShortlist').classList.toggle('active', !isCountry);
-  document.getElementById('tabCountry').classList.toggle('active', isCountry);
-  document.getElementById('tabCountry').setAttribute('aria-selected', isCountry);
-  document.getElementById('tabShortlist').classList.toggle('active', !isCountry);
-  document.getElementById('tabShortlist').setAttribute('aria-selected', !isCountry);
+function openShortlist() {
+  document.getElementById('shortlistScreen').classList.add('open');
+  document.getElementById('shortlistScreen').scrollTop = 0;
+  document.getElementById('floatPill').style.display = 'none';
+}
 
-  const phoneIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8 19.79 19.79 0 01.22 2.18 2 2 0 012.18 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.09 6.09l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>`;
-  document.getElementById('stickyCtaText').innerHTML = `Request a call back ${phoneIcon}`;
-
-  document.getElementById('floatPill').style.display = isCountry ? '' : 'none';
-  const targetId = isCountry ? 'sec-why' : 'counsellor-note';
-  setTimeout(() => {
-    const el = document.getElementById(targetId);
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 105, behavior: 'smooth' });
-  }, 50);
+function closeShortlist() {
+  document.getElementById('shortlistScreen').classList.remove('open');
+  document.getElementById('floatPill').style.display = '';
 }
 
 // ─── PILL NAV ────────────────────────────────────────────────────────
@@ -1371,7 +1428,7 @@ function toggleCounsellorNote() {
 
 
 // ─── ACTIVE SECTION DETECTION ────────────────────────────────────────
-const sectionIds = ['sec-why','sec-demand','sec-colleges','sec-financial','sec-jobs','sec-timeline','sec-faq'];
+const sectionIds = ['sec-faq','sec-why','sec-demand','sec-colleges','sec-financial','sec-jobs','sec-timeline'];
 
 function getActiveSection() {
   let active = sectionIds[0];
@@ -1388,6 +1445,21 @@ function updateSheetActiveState() {
     const item = document.getElementById('si-' + id);
     if (item) item.classList.toggle('active-section', id === active);
   });
+}
+
+// ─── SHOW JUMP TO BUTTON AFTER SCROLLING PAST JUMP SECTION ──────────
+window.addEventListener('scroll', () => {
+  const pill = document.getElementById('floatPill');
+  const jumpSec = document.getElementById('jump-section');
+  if (!pill || !jumpSec) return;
+  const past = jumpSec.getBoundingClientRect().bottom < 52;
+  pill.classList.toggle('visible', past);
+}, { passive: true });
+
+// ─── JUMP TO ─────────────────────────────────────────────────────────
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 105, behavior: 'smooth' });
 }
 
 // ─── BOTTOM SHEET ────────────────────────────────────────────────────
