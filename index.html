@@ -129,26 +129,25 @@
   }
 
   /* ── HERO ── */
-  .hero { position: relative; margin-top: 52px; }
-  .hero-flag {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-  }
-  .hero-card {
-    background: #fff;
-    border-radius: 20px 20px 0 0;
-    margin-top: -28px;
-    position: relative;
-    padding: 24px 20px 20px;
+  .hero {
+    position: relative; margin-top: 52px;
+    background: linear-gradient(180deg, #F5F3FF 0%, #FFFFFF 100%);
+    padding: 32px 20px 28px;
     text-align: center;
-    border: 1px solid var(--border);
-    border-bottom: none;
   }
-  .hero-greeting { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
-  .hero-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 8px; line-height: 1.3; }
-  .hero-sub { font-size: 14px; color: var(--muted); line-height: 1.6; max-width: 300px; margin: 0 auto; }
+  .hero-greeting { font-size: 16px; color: var(--text); font-weight: 500; margin-bottom: 10px; }
+  .hero-title {
+    font-size: 30px; font-weight: 800;
+    color: var(--text); line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 16px;
+  }
+  .hero-title .accent { color: #8B5CF6; }
+  .hero-sub {
+    font-size: 14px; color: #4B5563; line-height: 1.6;
+    max-width: 320px; margin: 0 auto;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 600; }
 
   /* ── SECTION ── */
   .section { padding: 20px 16px; }
@@ -387,6 +386,52 @@
   .job-name { font-size: 14px; font-weight: 600; color: var(--text); }
   .job-company { font-size: 12px; color: var(--muted); margin-top: 2px; }
   .job-arrow { color: var(--muted); }
+
+  /* ── JOBS/PEOPLE TOGGLE ── */
+  .jp-toggle {
+    display: flex; background: #F3F4F6;
+    border-radius: 12px; padding: 4px;
+    margin-bottom: 14px; gap: 4px;
+  }
+  .jp-tab {
+    flex: 1; padding: 9px 0;
+    background: transparent; border: none;
+    border-radius: 9px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px; font-weight: 600;
+    color: #6B7280; cursor: pointer;
+    transition: all 0.18s;
+  }
+  .jp-tab.active {
+    background: #fff;
+    color: #111827;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* ── PEOPLE CARDS ── */
+  .person-card {
+    display: flex; align-items: center; gap: 12px;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+  .person-avatar {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; flex-shrink: 0; color: #fff;
+  }
+  .person-info { flex: 1; min-width: 0; }
+  .person-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .person-bio {
+    font-size: 12px; color: var(--muted); line-height: 1.45;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .person-linkedin {
+    width: 28px; height: 28px; border-radius: 6px;
+    background: #0A66C2; display: flex;
+    align-items: center; justify-content: center; flex-shrink: 0;
+    text-decoration: none;
+  }
 
   /* ── TIMELINE ── */
   .timeline { position: relative; padding-left: 28px; }
@@ -692,13 +737,11 @@
     </button>
   </header>
 
-  <!-- HERO (shared across both tabs) -->
+  <!-- HERO -->
   <div class="hero">
-    <img src="https://flagcdn.com/w1280/gb.jpg" alt="United Kingdom flag" class="hero-flag">
-    <div class="hero-card">
-      <p class="hero-greeting">Hi, Rahul 👋</p>
-      <h1 class="hero-title">Your study abroad plan is here</h1>
-    </div>
+    <p class="hero-greeting">Hi Rahul</p>
+    <h1 class="hero-title">Your <span class="accent">Study Abroad Plan</span> is here</h1>
+    <p class="hero-sub">Your counsellor has put together colleges, ROI, jobs, and your path to PR.</p>
   </div>
 
 
@@ -715,7 +758,7 @@
       <div class="jump-grid">
         <div class="jump-card" onclick="jumpTo('sec-faq')">
           <div class="jump-step-num">1</div>
-          <span class="jump-card-label">Session Q&amp;A</span>
+          <span class="jump-card-label">Your Questions, Answered</span>
           <svg class="jump-card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
         </div>
         <div class="jump-card" onclick="jumpTo('sec-why')">
@@ -754,8 +797,9 @@
 
     <!-- SESSION Q&A -->
     <div id="sec-faq" class="section">
-      <h2 class="section-title">Questions from your counselling session</h2>
+      <h2 class="section-title">Here are all the answers you're looking for</h2>
       <div id="faqList" role="list"></div>
+      <a class="view-all" id="faqViewAll" onclick="toggleFAQList()" role="button" tabindex="0" aria-label="Show all questions">Show all questions <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg></a>
     </div>
 
     <div class="section-divider"></div>
@@ -841,7 +885,10 @@
         <!-- Cards rendered by JS -->
       </div>
 
-      <a class="view-all" onclick="openShortlist()" role="button" tabindex="0" aria-label="View all 12 colleges in shortlist">View all 12 colleges →</a>
+      <!-- Expanded cards (hidden by default) -->
+      <div id="moreColleges" style="display:none;"></div>
+
+      <a class="view-all" id="viewAllToggle" onclick="toggleCollegeList()" role="button" tabindex="0" aria-label="View all colleges">View all 20 colleges <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-left:2px;"><polyline points="6 9 12 15 18 9"/></svg></a>
     </div>
 
     <div class="section-divider"></div>
@@ -930,7 +977,15 @@
     <!-- SECTION 4: Live job openings -->
     <div id="sec-jobs" class="section">
       <h2 class="section-title">Live job openings</h2>
+
+      <!-- Jobs / People toggle -->
+      <div class="jp-toggle">
+        <button class="jp-tab active" id="jpTabJobs" onclick="switchJobsPeople('jobs')">Jobs</button>
+        <button class="jp-tab" id="jpTabPeople" onclick="switchJobsPeople('people')">People</button>
+      </div>
+
       <div id="jobCards"></div>
+      <div id="peopleCards" style="display:none;"></div>
     </div>
 
     <div class="section-divider"></div>
@@ -973,44 +1028,6 @@
   <!-- ═══════════════════════════════════════════
        TAB 2: YOUR SHORTLIST
   ════════════════════════════════════════════ -->
-  <!-- ═══════════════════════════════════════════
-       SHORTLIST FULL-SCREEN PAGE
-  ════════════════════════════════════════════ -->
-  <div id="shortlistScreen">
-    <!-- Header -->
-    <div class="shortlist-header">
-      <button class="back-btn" onclick="closeShortlist()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-        Back
-      </button>
-      <span class="shortlist-header-title">Your Shortlist</span>
-    </div>
-
-    <!-- Counsellor's Note -->
-    <div id="counsellor-note"></div>
-    <div style="margin: 16px 16px 0;">
-      <div style="border: 1px solid #E5E7EB; border-radius: 12px; padding: 16px 18px; text-align: center;">
-        <div style="font-size: 13px; font-weight: 600; color: #4F46E5; margin-bottom: 10px;">Counsellor's Note</div>
-        <p id="counsellorText" style="font-size: 14px; font-style: italic; color: #374151; line-height: 1.75; text-align: center; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-          Hey <strong>Aniket</strong>, upon reviewing your profile and preferences, I have put together this shortlist just for you. These are courses I think are worth your attention. Universities that match what you are looking for, fees within your budget, and programs where your chances are strong. I hope something here catches your eye. If you want to dive deeper into any of these or have questions, feel free to reach out. I am here to help.
-        </p>
-        <button id="counsellorReadMore" onclick="toggleCounsellorNote()" style="margin-top: 6px; background: none; border: none; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: #4F46E5; cursor: pointer; padding: 0; display: block; width: 100%; text-align: center;">Read more</button>
-      </div>
-    </div>
-
-    <!-- Courses found divider -->
-    <div style="display: flex; align-items: center; gap: 10px; padding: 20px 16px 8px;">
-      <div style="flex:1; height:1px; background:#4F46E5; opacity:0.25;"></div>
-      <div style="text-align:center; line-height:1.4;">
-        <div style="font-size: 11px; font-weight: 700; color: #4F46E5; letter-spacing: 0.1em; white-space: nowrap;">20 COURSES FOUND</div>
-      </div>
-      <div style="flex:1; height:1px; background:#4F46E5; opacity:0.25;"></div>
-    </div>
-
-    <!-- Flat list of all cards -->
-    <div id="allShortlistCards" style="padding: 0 16px;"></div>
-    <div style="height: 80px;"></div>
-  </div><!-- end #shortlistScreen -->
 
   <!-- SUCCESS MODAL -->
 <div id="successModal" style="display:none; position:fixed; inset:0; z-index:100; background:rgba(0,0,0,0.45); align-items:flex-end; justify-content:center;" onclick="closeModal(event)">
@@ -1067,7 +1084,7 @@
   <div id="bottomSheet" role="dialog" aria-label="Plan sections">
     <div class="sheet-handle"></div>
     <div class="sheet-item" id="si-sec-faq" onclick="sheetNav('sec-faq')">
-      <span class="sheet-item-label">Session Q&amp;A</span>
+      <span class="sheet-item-label">Your Questions, Answered</span>
       <span class="sheet-dot" id="sd-sec-faq"></span>
     </div>
     <div class="sheet-item" id="si-sec-why" onclick="sheetNav('sec-why')">
@@ -1119,9 +1136,17 @@ const topColleges = [
 const jobs = [
   { name: 'Software Engineer', company: 'Google DeepMind', color: '#4285F4', letter: 'G' },
   { name: 'ML Engineer', company: 'Amazon UK', color: '#FF9900', letter: 'A' },
-  { name: 'Backend Developer', company: 'Stripe', company: 'Stripe', color: '#635BFF', letter: 'S' },
+  { name: 'Backend Developer', company: 'Stripe', color: '#635BFF', letter: 'S' },
   { name: 'Data Scientist', company: 'Goldman Sachs', color: '#0080C6', letter: 'GS' },
   { name: 'Full-Stack Engineer', company: 'Revolut', color: '#191C1F', letter: 'R' },
+];
+
+const people = [
+  { name: 'Srividya Chilukoti', bio: 'Studied Artificial Intelligence in the UK with focus on machine learning, currently at Google London.', color: '#EC4899', initials: 'SC' },
+  { name: 'Anastasia Ilina', bio: 'Holds an MSc Artificial Intelligence degree from Imperial College London. Now an ML Engineer at DeepMind.', color: '#10B981', initials: 'AI' },
+  { name: 'Siddhant Tayade', bio: 'MSc Artificial Intelligence student at the University of York with prior experience at TCS Research.', color: '#8B5CF6', initials: 'ST' },
+  { name: 'Furkan Canpinar', bio: 'Graduated with Distinction in MSc Artificial Intelligence from Queen Mary University, now at Amazon UK.', color: '#F97316', initials: 'FC' },
+  { name: 'Aneeqa Umar', bio: 'Completed MSc Artificial Intelligence at University of Edinburgh, now a Data Scientist at Revolut.', color: '#6366F1', initials: 'AU' },
 ];
 
 const faqs = [
@@ -1226,6 +1251,29 @@ function renderJobCards() {
   `).join('');
 }
 
+function renderPeople() {
+  document.getElementById('peopleCards').innerHTML = people.map(p => `
+    <div class="person-card" role="article" aria-label="${p.name}">
+      <div class="person-avatar" style="background:${p.color}" aria-hidden="true">${p.initials}</div>
+      <div class="person-info">
+        <div class="person-name">${p.name}</div>
+        <div class="person-bio">${p.bio}</div>
+      </div>
+      <a href="https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(p.name)}" target="_blank" rel="noopener" class="person-linkedin" aria-label="View ${p.name} on LinkedIn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 118.3 6.5a1.78 1.78 0 01-1.8 1.75zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0013 14.19a.66.66 0 000 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 012.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+      </a>
+    </div>
+  `).join('');
+}
+
+function switchJobsPeople(tab) {
+  const isJobs = tab === 'jobs';
+  document.getElementById('jobCards').style.display = isJobs ? '' : 'none';
+  document.getElementById('peopleCards').style.display = isJobs ? 'none' : '';
+  document.getElementById('jpTabJobs').classList.toggle('active', isJobs);
+  document.getElementById('jpTabPeople').classList.toggle('active', !isJobs);
+}
+
 function renderFAQ() {
   document.getElementById('faqList').innerHTML = faqs.map((f, i) => `
     <div class="faq-item" role="listitem" id="faq-${i}">
@@ -1241,73 +1289,47 @@ function renderFAQ() {
   `).join('');
 }
 
-function shortlistCardHTML(c, group) {
-  const initial = c.name.trim()[0].toUpperCase();
-  const admitMap = {
-    safe:       { cls: 'sl-admit-safe',       label: '<strong>Safe:</strong> Your admit chances are very high' },
-    moderate:   { cls: 'sl-admit-moderate',   label: '<strong>Moderate:</strong> Your admit chances are moderate...' },
-    ambitious:  { cls: 'sl-admit-ambitious',  label: '<strong>Ambitious:</strong> Admit chances are competitive here' },
-  };
-  const admit = admitMap[group];
-  const hasScholarship = c.rank <= 54;
-  return `
-    <div class="sl-card">
-      <div class="sl-card-header">
-        <div class="sl-avatar">${initial}</div>
-        <div class="sl-uni-name">${c.name}</div>
-      </div>
-      <div class="sl-course">${c.course}</div>
-      <div class="sl-admit-badge ${admit.cls}">${admit.label}</div>
-      <div class="sl-stats-row">
-        <div class="sl-stat">
-          <div class="sl-stat-label">Country</div>
-          <div class="sl-stat-value">🇬🇧 UK</div>
-        </div>
-        <div class="sl-stat">
-          <div class="sl-stat-label">Tuition Fee</div>
-          <div class="sl-stat-value">${c.fees}</div>
-        </div>
-        <div class="sl-stat">
-          <div class="sl-stat-label">Duration</div>
-          <div class="sl-stat-value">${c.duration}</div>
-        </div>
-        ${hasScholarship ? `<span class="sl-scholarship">Scholarship<br>Available</span>` : ''}
-      </div>
-      <button class="sl-why-btn" onclick="toggleWhySection(this)">Why It Suits You</button>
-      <div class="sl-why-section">
-        <div class="sl-why-header">
-          Why this was recommended?
-          <button class="sl-why-collapse" onclick="toggleWhySection(this.closest('.sl-card').querySelector('.sl-why-btn'))">Collapse All</button>
-        </div>
-        ${[
-          { icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`, label: 'This is verified by QS Rankings 2025', answer: 'This university is ranked in the QS World University Rankings 2025, ensuring quality education and global recognition.' },
-          { icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`, label: 'Scholarship Available', answer: 'Multiple merit and need-based scholarships are available for international students, reducing your overall cost of study.' },
-          { icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>`, label: 'University offers placement support', answer: 'Dedicated career services and industry partnerships help students secure placements at top UK and global companies.' },
-          { icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>`, label: 'University is affordable and offers value for money', answer: 'Tuition fees are competitive compared to peer institutions, and the 1-year programme saves you one year of living costs.' },
-          { icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>`, label: 'Top choice of Indian students', answer: 'Thousands of Indian students study here each year, ensuring a strong support community and cultural familiarity.' },
-          { icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`, label: 'University offers over £20 million in Scholarships annually', answer: 'A large scholarship fund means higher chances of financial aid for deserving students across all disciplines.' },
-        ].map((item, i) => `
-          <div class="sl-why-item" id="why-item-${Math.random().toString(36).slice(2)}">
-            <div class="sl-why-q" onclick="toggleWhyItem(this.parentElement)">
-              <div class="sl-why-icon">${item.icon}</div>
-              ${item.label}
-              <svg class="sl-why-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-            </div>
-            <div class="sl-why-answer">${item.answer}</div>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `;
+function renderMoreColleges() {
+  // Build the "more" pool: combine all shortlist data, dedupe vs the 3 already shown
+  const shown = new Set(topColleges.map(c => c.name + '|' + c.course));
+  const pool = [
+    ...shortlistData.safe,
+    ...shortlistData.moderate,
+    ...shortlistData.ambitious,
+  ].filter(c => !shown.has(c.name + '|' + c.course));
+  document.getElementById('moreColleges').innerHTML = pool.map(collegeCardHTML).join('');
 }
 
-function renderShortlist() {
-  const allCards = [
-    ...shortlistData.safe.map(c => shortlistCardHTML(c, 'safe')),
-    ...shortlistData.moderate.map(c => shortlistCardHTML(c, 'moderate')),
-    ...shortlistData.ambitious.map(c => shortlistCardHTML(c, 'ambitious')),
-  ];
-  document.getElementById('allShortlistCards').innerHTML = allCards.join('');
+function toggleCollegeList() {
+  const more = document.getElementById('moreColleges');
+  const btn = document.getElementById('viewAllToggle');
+  const isOpen = more.style.display === 'block';
+  more.style.display = isOpen ? 'none' : 'block';
+  const chev = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-left:2px;transform:rotate(${isOpen ? 0 : 180}deg);transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>`;
+  btn.innerHTML = (isOpen ? 'View all 20 colleges ' : 'Show less ') + chev;
+}
+
+function toggleFAQList() {
+  const faqItems = document.querySelectorAll('#faqList .faq-item');
+  const btn = document.getElementById('faqViewAll');
+  const isExpanded = btn.dataset.expanded === '1';
+  faqItems.forEach((el, i) => {
+    if (i >= 3) el.style.display = isExpanded ? 'none' : 'block';
+    el.classList.remove('open');
+    const q = el.querySelector('.faq-question');
+    if (q) q.setAttribute('aria-expanded', 'false');
+  });
+  btn.dataset.expanded = isExpanded ? '0' : '1';
+  const chev = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-left:2px;transform:rotate(${isExpanded ? 0 : 180}deg);transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>`;
+  btn.innerHTML = (isExpanded ? 'Show all questions ' : 'Show less ') + chev;
+}
+
+function applyFAQCollapse() {
+  // collapse all FAQs and hide items beyond first 3
+  document.querySelectorAll('#faqList .faq-item').forEach((el, i) => {
+    el.classList.remove('open');
+    if (i >= 3) el.style.display = 'none';
+  });
 }
 
 function toggleFAQ(i) {
@@ -1393,18 +1415,6 @@ function initFinanceChart() {
   });
 }
 
-// ─── TAB SWITCHING ────────────────────────────────────────────────────
-function openShortlist() {
-  document.getElementById('shortlistScreen').classList.add('open');
-  document.getElementById('shortlistScreen').scrollTop = 0;
-  document.getElementById('floatPill').style.display = 'none';
-}
-
-function closeShortlist() {
-  document.getElementById('shortlistScreen').classList.remove('open');
-  document.getElementById('floatPill').style.display = '';
-}
-
 // ─── PILL NAV ────────────────────────────────────────────────────────
 function scrollToSection(id, btn) {
   document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
@@ -1480,34 +1490,6 @@ function sheetNav(id) {
   }, 280);
 }
 
-// ─── WHY ACCORDION ───────────────────────────────────────────────────
-function toggleWhySection(btn) {
-  const card = btn.closest('.sl-card');
-  const section = card.querySelector('.sl-why-section');
-  const isOpen = section.classList.contains('open');
-
-  // Close all other open cards first
-  document.querySelectorAll('.sl-why-section.open').forEach(s => {
-    if (s !== section) {
-      s.classList.remove('open');
-      const otherBtn = s.closest('.sl-card').querySelector('.sl-why-btn');
-      otherBtn.textContent = 'Why It Suits You';
-      otherBtn.style.background = '';
-    }
-  });
-
-  section.classList.toggle('open', !isOpen);
-  btn.textContent = isOpen ? 'Why It Suits You' : 'Hide Details';
-  btn.style.background = isOpen ? '' : '#E0E7FF';
-}
-
-function toggleWhyItem(item) {
-  const card = item.closest('.sl-why-section');
-  const isOpen = item.classList.contains('open');
-  card.querySelectorAll('.sl-why-item.open').forEach(el => el.classList.remove('open'));
-  if (!isOpen) item.classList.add('open');
-}
-
 // ─── MODAL ───────────────────────────────────────────────────────────
 function openModal() {
   const m = document.getElementById('successModal');
@@ -1523,8 +1505,10 @@ function closeModal(e) {
 document.addEventListener('DOMContentLoaded', () => {
   renderCollegeCards();
   renderJobCards();
+  renderPeople();
   renderFAQ();
-  renderShortlist();
+  renderMoreColleges();
+  applyFAQCollapse();
   initDemandChart();
   initFinanceChart();
 });
