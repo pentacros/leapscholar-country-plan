@@ -604,28 +604,30 @@
   /* ── RECT FLOAT BUTTON ── */
   #floatPill {
     position: fixed;
-    bottom: 120px;
+    bottom: 80px;
     right: 16px;
     z-index: 45;
-    height: 46px;
-    border-radius: 14px;
+    height: 38px;
+    border-radius: 12px;
     background: #111827;
     border: none;
     cursor: pointer;
     display: flex; flex-direction: row;
     align-items: center; justify-content: center;
-    gap: 8px; padding: 0 16px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    gap: 6px; padding: 0 13px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
     white-space: nowrap;
     opacity: 0; pointer-events: none;
     transition: opacity 0.25s ease, transform 0.2s, box-shadow 0.2s;
   }
+  #floatPill .fp-icon svg { width: 16px; height: 16px; }
   #floatPill:hover { transform: scale(1.04); box-shadow: 0 6px 22px rgba(0,0,0,0.5); }
   #floatPill.visible { opacity: 1; pointer-events: all; }
+  #floatPill.menu-open { opacity: 0 !important; pointer-events: none !important; }
   #floatPill .fp-icon { display: flex; align-items: center; justify-content: center; }
   #floatPill .fp-label {
     font-family: 'Inter', sans-serif;
-    font-size: 13px; font-weight: 700;
+    font-size: 11px; font-weight: 700;
     letter-spacing: 0.05em; color: #fff;
     text-transform: uppercase; line-height: 1;
   }
@@ -638,9 +640,9 @@
   #sheetOverlay.open { display: block; }
   #bottomSheet {
     position: fixed;
-    bottom: 76px;
+    bottom: 80px;
     right: 16px;
-    width: 200px;
+    width: 165px;
     background: #1C1C1E;
     border-radius: 16px;
     z-index: 95;
@@ -661,17 +663,17 @@
   .sheet-handle { display: none; }
   .sheet-item {
     display: flex; align-items: center;
-    padding: 13px 18px; cursor: pointer;
+    padding: 8px 12px; cursor: pointer;
     transition: background 0.12s;
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .sheet-item:hover { background: rgba(255,255,255,0.06); }
   .sheet-item:last-child { border-bottom: none; }
-  .sheet-item-label { font-size: 14px; font-weight: 500; color: #F3F4F6; }
+  .sheet-item-label { font-size: 12px; font-weight: 500; color: #F3F4F6; line-height: 1.3; white-space: nowrap; }
   .sheet-item-count { display: none; }
   .sheet-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: transparent; flex-shrink: 0; margin-right: 10px; order: -1;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: transparent; flex-shrink: 0; margin-right: 8px; order: -1;
     transition: background 0.2s;
   }
   .sheet-item.active-section .sheet-dot { background: #fff; box-shadow: 0 0 6px rgba(255,255,255,0.6); }
@@ -1084,7 +1086,7 @@
   <div id="bottomSheet" role="dialog" aria-label="Plan sections">
     <div class="sheet-handle"></div>
     <div class="sheet-item" id="si-sec-faq" onclick="sheetNav('sec-faq')">
-      <span class="sheet-item-label">Your Questions, Answered</span>
+      <span class="sheet-item-label">Questions Answered</span>
       <span class="sheet-dot" id="sd-sec-faq"></span>
     </div>
     <div class="sheet-item" id="si-sec-why" onclick="sheetNav('sec-why')">
@@ -1477,10 +1479,12 @@ function openSheet() {
   updateSheetActiveState();
   document.getElementById('sheetOverlay').classList.add('open');
   document.getElementById('bottomSheet').classList.add('open');
+  document.getElementById('floatPill').classList.add('menu-open');
 }
 function closeSheet() {
   document.getElementById('sheetOverlay').classList.remove('open');
   document.getElementById('bottomSheet').classList.remove('open');
+  document.getElementById('floatPill').classList.remove('menu-open');
 }
 function sheetNav(id) {
   closeSheet();
