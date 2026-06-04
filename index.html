@@ -815,11 +815,6 @@
           <span class="jump-card-label">Why Choose UK</span>
           <svg class="jump-card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </div>
-        <div class="jump-card" onclick="jumpTo('sec-demand')">
-          <span class="jump-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></span>
-          <span class="jump-card-label">Industry Demand</span>
-          <svg class="jump-card-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </div>
         <div class="jump-card" onclick="jumpTo('sec-colleges')">
           <span class="jump-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 22v-9l10-5 10 5v9"/><path d="M6 13v9"/><path d="M18 13v9"/><path d="M10 22v-6h4v6"/></svg></span>
           <span class="jump-card-label">Best Fit Colleges</span>
@@ -894,35 +889,6 @@
           <div class="why-row"><strong>Openings:</strong> London alone has 1M+ active tech vacancies in 2026.</div>
           <div class="why-row"><strong>Salaries:</strong> Starting: £30k to £35k. Senior in London/Manchester: £55k to £85k.</div>
           <div class="why-row"><strong>Cost of Living:</strong> London 1.4:1 ratio. Manchester/Leeds 1.9:1. Save £500 to £800/month.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <!-- SECTION 1B: Industry Demand -->
-    <div id="sec-demand" class="subsection">
-      <h2 class="subsection-title">What is the demand for CS Graduates in the UK?</h2>
-
-      <div class="chart-wrap">
-        <canvas id="demandChart" aria-label="CS job growth trend chart" role="img"></canvas>
-      </div>
-
-      <p class="body-para">Computer science roles in the UK have grown 3× in the last quarter, with strong starting salaries from Google, Amazon and Stripe alongside the country's deepest-funded startup wave in a decade.</p>
-
-      <p class="facts-label">Hey Rahul, let's talk about facts</p>
-      <div>
-        <div class="fact-item">
-          <div class="fact-badge" aria-hidden="true">1</div>
-          <p class="fact-text">40 out of the world's top 100 universities are in the UK.</p>
-        </div>
-        <div class="fact-item">
-          <div class="fact-badge" aria-hidden="true">2</div>
-          <p class="fact-text">CS roles have grown 3× in the last quarter across UK tech hubs.</p>
-        </div>
-        <div class="fact-item">
-          <div class="fact-badge" aria-hidden="true">3</div>
-          <p class="fact-text">Graduate visa allows 2 years of open work rights post-degree.</p>
         </div>
       </div>
     </div>
@@ -1142,10 +1108,6 @@
     <div class="sheet-item" id="si-sec-why" onclick="sheetNav('sec-why')">
       <span class="sheet-item-label">Why Choose UK</span>
       <span class="sheet-dot" id="sd-sec-why"></span>
-    </div>
-    <div class="sheet-item" id="si-sec-demand" onclick="sheetNav('sec-demand')">
-      <span class="sheet-item-label">Industry Demand</span>
-      <span class="sheet-dot" id="sd-sec-demand"></span>
     </div>
     <div class="sheet-item" id="si-sec-colleges" onclick="sheetNav('sec-colleges')">
       <span class="sheet-item-label">Best Fit Colleges</span>
@@ -1490,7 +1452,7 @@ function toggleCounsellorNote() {
 
 
 // ─── ACTIVE SECTION DETECTION ────────────────────────────────────────
-const sectionIds = ['sec-faq','sec-why','sec-demand','sec-colleges','sec-financial','sec-jobs','sec-timeline'];
+const sectionIds = ['sec-faq','sec-why','sec-colleges','sec-financial','sec-jobs','sec-timeline'];
 
 function getActiveSection() {
   let active = sectionIds[0];
@@ -1563,7 +1525,6 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFAQ();
   renderMoreColleges();
   applyFAQCollapse();
-  initDemandChart();
   initFinanceChart();
 });
 </script>
